@@ -60,14 +60,14 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final bodyMediumColor = theme.textTheme.bodyMedium?.color;
     final headlineSmallColor = theme.textTheme.headlineSmall?.color;
-    // Using a slightly smaller font for user input for better fit
+    // TODO: Using a slightly smaller font for user input for better fit
     final userInputStyle = theme.textTheme.labelLarge?.copyWith(
-      fontSize: 26, // Reduced from 28
+      fontSize: 26,
       color: bodyMediumColor?.withAlpha((255 * 0.7).round()),
       fontWeight: FontWeight.w300,
     );
     final answerStyle = theme.textTheme.headlineSmall?.copyWith(
-      fontSize: 46, // Reduced from 48
+      fontSize: 46,
       color: headlineSmallColor,
       fontWeight: FontWeight.bold,
     );
