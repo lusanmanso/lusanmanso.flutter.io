@@ -3,10 +3,11 @@ import 'package:math_expressions/math_expressions.dart';
 
 void main() {
   runApp(MyApp());
+  // Prueba de push
 }
 
 class MyApp extends StatelessWidget {
-  // const MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {   // This widget is the root of your application.
