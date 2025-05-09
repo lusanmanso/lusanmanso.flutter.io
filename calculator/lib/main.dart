@@ -46,7 +46,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var userInput = '';
   var answer = '0';
-
+  // Extraído de https://www.geeksforgeeks.org/simple-calculator-app-using-flutter/
   final List<String> buttons = [
     'C', '+/-', '%', 'DEL',
     '7', '8', '9', '/',
@@ -89,9 +89,9 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            flex: 3, // Adjusted flex for display area (was 2)
+            flex: 3,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20), // Reduced vertical padding
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               alignment: Alignment.bottomRight,
               decoration: BoxDecoration(
                 color: theme.canvasColor,
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                       textAlign: TextAlign.right,
                     ),
                   ),
-                  const SizedBox(height: 10), // Reduced spacing
+                  const SizedBox(height: 10),
                   Text(
                     answer,
                     style: answerStyle,
@@ -129,17 +129,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            flex: 7, // Adjusted flex for button area (was 5)
+            flex: 7,
             child: Container(
-              padding: const EdgeInsets.all(12), // Reduced padding around grid
+              padding: const EdgeInsets.all(12),
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: buttons.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  childAspectRatio: 1.05, // Adjusted aspect ratio for smaller buttons (was 1.1)
-                  crossAxisSpacing: 10, // Reduced spacing (was 12)
-                  mainAxisSpacing: 10,  // Reduced spacing (was 12)
+                  childAspectRatio: 1.05,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   final buttonText = buttons[index];
@@ -304,15 +304,14 @@ class _HomePageState extends State<HomePage> {
 // creating Stateless Widget for buttons
 @immutable
 class MyButton extends StatelessWidget {
-  // declaring variables
   final Color? color;
   final Color? textColor;
   final String buttonText;
   final VoidCallback? buttonTapped;
 
   //Constructor
-  const MyButton({ // Added const
-    super.key, // Added key
+  const MyButton({
+    super.key, // FIXME: Added key
     this.color,
     this.textColor,
     required this.buttonText,
@@ -322,17 +321,16 @@ class MyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context); // Get theme for fallback colors/styles
-    // Using a slightly smaller font for button text for better fit
     final buttonTextStyle = theme.textTheme.bodyMedium?.copyWith(
       color: textColor ?? theme.textTheme.bodyMedium?.color,
-      fontSize: 20, // Reduced from 22
+      fontSize: 20, // FIXME: Reduced from 22
       fontWeight: FontWeight.w500,
     );
 
     return GestureDetector(
       onTap: buttonTapped,
       child: Padding(
-        padding: const EdgeInsets.all(0.2), // User's specified padding
+        padding: const EdgeInsets.all(0.2),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16), // Rounded corners like in the immersive
           child: Container(
