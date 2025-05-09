@@ -20,10 +20,8 @@ class MyApp extends StatelessWidget {
         canvasColor: const Color(0xFFFFFFFF),
         cardColor: const Color(0xFFFFFFFF),
         textTheme: const TextTheme(
-          headlineSmall: TextStyle(color: Color(0xFF111827)), // For titles (answer)
-          bodyMedium: TextStyle(color: Color(0xFF374151)), // For general text (buttons)
-          titleLarge: TextStyle(color: Color(0xFF111827)), // For app bar title
-          labelLarge: TextStyle(color: Color(0xFF374151)), // For user input
+          headlineSmall: TextStyle(color: Color(0xFF111827)),
+          bodyMedium: TextStyle(color: Color(0xFF374151)),
         ),
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: const Color(0xFF1F2937),
@@ -60,24 +58,12 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final bodyMediumColor = theme.textTheme.bodyMedium?.color;
     final headlineSmallColor = theme.textTheme.headlineSmall?.color;
-    // Using a slightly smaller font for user input for better fit
-    final userInputStyle = theme.textTheme.labelLarge?.copyWith(
-      fontSize: 26, // Reduced from 28
-      color: bodyMediumColor?.withAlpha((255 * 0.7).round()),
-      fontWeight: FontWeight.w300,
-    );
-    final answerStyle = theme.textTheme.headlineSmall?.copyWith(
-      fontSize: 46, // Reduced from 48
-      color: headlineSmallColor,
-      fontWeight: FontWeight.bold,
-    );
-
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Flutter Calculator",
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             color: theme.colorScheme.onPrimary,
           ),
@@ -89,9 +75,9 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            flex: 3, // Adjusted flex for display area (was 2)
+            flex: 2,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20), // Reduced vertical padding
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
               alignment: Alignment.bottomRight,
               decoration: BoxDecoration(
                 color: theme.canvasColor,
@@ -114,14 +100,22 @@ class _HomePageState extends State<HomePage> {
                     reverse: true,
                     child: Text(
                       userInput.isEmpty ? '0' : userInput,
-                      style: userInputStyle,
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: bodyMediumColor?.withAlpha((255 * 0.7).round()),
+                        fontWeight: FontWeight.w300,
+                      ),
                       textAlign: TextAlign.right,
                     ),
                   ),
-                  const SizedBox(height: 10), // Reduced spacing
+                  const SizedBox(height: 12),
                   Text(
                     answer,
-                    style: answerStyle,
+                    style: TextStyle(
+                      fontSize: 48,
+                      color: headlineSmallColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.right,
                   ),
                 ],
@@ -129,17 +123,17 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            flex: 7, // Adjusted flex for button area (was 5)
+            flex: 5,
             child: Container(
-              padding: const EdgeInsets.all(12), // Reduced padding around grid
+              padding: const EdgeInsets.all(16),
               child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: buttons.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  childAspectRatio: 1.05, // Adjusted aspect ratio for smaller buttons (was 1.1)
-                  crossAxisSpacing: 10, // Reduced spacing (was 12)
-                  mainAxisSpacing: 10,  // Reduced spacing (was 12)
+                  childAspectRatio: 1.1,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   final buttonText = buttons[index];
@@ -147,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                   if (buttonText == 'C') {
                     return MyButton(
                       key: ValueKey('button_$buttonText'),
-                      buttonTapped: () {
+                      buttontapped: () {
                         setState(() {
                           userInput = '';
                           answer = '0';
@@ -160,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                   } else if (buttonText == 'DEL') {
                     return MyButton(
                       key: ValueKey('button_$buttonText'),
-                      buttonTapped: () {
+                      buttontapped: () {
                         setState(() {
                           if (userInput.isNotEmpty) {
                             userInput = userInput.substring(0, userInput.length - 1);
@@ -174,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                   } else if (buttonText == '=') {
                     return MyButton(
                       key: ValueKey('button_$buttonText'),
-                      buttonTapped: () {
+                      buttontapped: () {
                         setState(() {
                           equalPressed();
                         });
@@ -186,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   } else {
                     return MyButton(
                       key: ValueKey('button_$buttonText'),
-                      buttonTapped: () {
+                      buttontapped: () {
                         setState(() {
                           if (buttonText == '+/-') {
                             if (userInput.isNotEmpty) {
@@ -308,7 +302,7 @@ class MyButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final String buttonText;
-  final VoidCallback? buttonTapped;
+  final VoidCallback? buttontapped;
 
   //Constructor
   const MyButton({ // Added const
@@ -316,21 +310,14 @@ class MyButton extends StatelessWidget {
     this.color,
     this.textColor,
     required this.buttonText,
-    this.buttonTapped,
+    this.buttontapped,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context); // Get theme for fallback colors/styles
-    // Using a slightly smaller font for button text for better fit
-    final buttonTextStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: textColor ?? theme.textTheme.bodyMedium?.color,
-      fontSize: 20, // Reduced from 22
-      fontWeight: FontWeight.w500,
-    );
-
     return GestureDetector(
-      onTap: buttonTapped,
+      onTap: buttontapped,
       child: Padding(
         padding: const EdgeInsets.all(0.2), // User's specified padding
         child: ClipRRect(
@@ -338,6 +325,8 @@ class MyButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: color ?? theme.cardColor, // Use provided color or theme's card color
+              // borderRadius is also set here to ensure the container itself is rounded,
+              // complementing ClipRRect, especially if there were other effects.
               borderRadius: BorderRadius.circular(16),
               boxShadow: [ // Subtle shadow for depth, from the immersive
                 BoxShadow(
@@ -351,7 +340,11 @@ class MyButton extends StatelessWidget {
             child: Center(
               child: Text(
                 buttonText,
-                style: buttonTextStyle,
+                style: TextStyle(
+                  color: textColor ?? theme.textTheme.bodyMedium?.color, // Use provided or theme text color
+                  fontSize: 22, // Consistent font size from immersive
+                  fontWeight: FontWeight.w500, // Consistent font weight from immersive
+                ),
               ),
             ),
           ),
